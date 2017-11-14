@@ -5,13 +5,33 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="./theme/ppal.css" />
+    <!--link rel="stylesheet" type="text/css" href="./theme/ppal.css" /-->
     <link href="https://fonts.googleapis.com/css?family=Armata" rel="stylesheet">
     <link href="css/assets/css/font-awesome.css" rel="stylesheet"></link>
     <link href="./css/bootstrap-social.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script>
+$(document).ready(function(){
+  $("#btnEnviar").click(function(){
+    $.post("./lib/enviar.php",
+           $('#frmDatos').serializeArray(),
+           null,
+           "json")
+     .done(function(data, status, jqXHR){
+             if(data.error == "Ok")
+               alert(data.nombre + ". Acabamos de registrar tus datos. En breve te enviaremos un correo de contacto a \n" + data.email + ".\n");
+             else
+               alert("No se pudo enviar el correo.\n" + data.error);
+           })
+     .fail(function(data){
+             alert("Ocurrió un problema");
+             console.log(data);
+           });
+  });
+});
+    </script>
     <style>
       blockquote{ background-color:rgba(223,223,223,0.75); border-radius:10px; border:1px dotted #000;}
     </style>
@@ -36,7 +56,7 @@
       <li style="background-color:rgba(0,0,0,0.85);" class="active"><a data-toggle="pill" href="#QueEs"><span class="glyphicon glyphicon-chevron-down"></span>&nbsp;¿De qué trata?</a></li>
       <li style="background-color:rgba(0,0,0,0.85);"><a data-toggle="pill" href="#AcercaDe"><span class="glyphicon glyphicon-chevron-down"></span>&nbsp;Sobre de mí</a></li>
       <li style="background-color:rgba(0,0,0,0.85);"><a data-toggle="pill" href="#PF"><span class="glyphicon glyphicon-chevron-down"></span>&nbsp;Preguntas más frecuentes</a></li>
-      <li style="background-color:rgba(0,0,0,0.85);"><a data-toggle="pill" href="#Demos"><span class="glyphicon glyphicon-chevron-down"></span>&nbsp;Aplicaciones web Demo</a></li>
+      <!--li style="background-color:rgba(0,0,0,0.85);"><a data-toggle="pill" href="#Demos"><span class="glyphicon glyphicon-chevron-down"></span>&nbsp;Aplicaciones web Demo</a></li /-->
     </ul>
     <div class="tab-content" style="background-color:rgba(255,255,255,0.7); padding:10px; height:400px; overflow:auto;">
       <div id="QueEs" class="tab-pane fade in active">
@@ -106,7 +126,7 @@
 
     <div id="modalContacto" class="modal fade" role="dialog" style="width:30%; margin:auto">
       <div class="modal-content">
-        <form>
+        <form id="frmDatos">
           <div class="modal-header" style="background-color:#33f; color:#fff; border:2px solid #00c;">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Déjame un mensaje</h4>
@@ -124,7 +144,7 @@
               <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                  <input type="text" id="txtmail" name="txtmail" class="form-control" placeholder="tu@correo.abc" style="box-shadow: 5px 5px 5px #333"></input>
+                  <input type="email" id="txtmail" name="txtmail" class="form-control" placeholder="tu@correo.abc" style="box-shadow: 5px 5px 5px #333"></input>
                 </div>
               </div>
             </div>
@@ -146,8 +166,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" style="box-shadow: 5px 5px 5px #333">Aceptar</button>
-            <button type="button" class="btn btn-warning" data-dismiss="modal" style="box-shadow: 5px 5px 5px #333">Cerrar</button>
+            <button id="btnEnviar" type="button" class="btn btn-primary" data-dismiss="modal" style="box-shadow: 5px 5px 5px #333">Aceptar</button>
+            <input type="reset" class="btn btn-warning" data-dismiss="modal" style="box-shadow: 5px 5px 5px #333" value="Cerrar"></input>
           </div>
         </form>
       </div>
